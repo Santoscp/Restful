@@ -102,4 +102,14 @@ public class PatientService {
 	        
 	        
 	    }
+	    public List<Patient> getPatientByMedic(Integer id) {
+	    	List<Patient> patientById= repository.getByMedic(id);
+	        
+	       
+	            return patientById;
+	        
+	        
+	    }
+	  
+	   
 	}

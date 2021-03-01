@@ -94,5 +94,19 @@ public class MedicinesService {
 	        }
 	        
 	    }
+	    public List<Medicines> getMedicinesByPatient(Integer id) {
+	    	List<Medicines> medicinesList = repository.getMedicinesByPatient(id);
+	        
+	        if(medicinesList.size() > 0) {
+	            return medicinesList;
+	        } else {
+	            return new ArrayList<Medicines>();
+	        }
+	        
+	    }
+	    public Integer addMedicineToPatient(Integer idpatient, Integer idmedicine) {
+	        repository.addMedicineToPatient(idpatient,idmedicine);
+	        return idpatient;
+	    }
 	  
 	}

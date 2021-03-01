@@ -1,14 +1,18 @@
 package com.santoscastillo.apirestfulservice.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 
@@ -28,7 +32,8 @@ public class Medic {
 	@Column(name="name")
 	private String name;
 	
-	@OneToMany
+	@JsonIgnoreProperties("medic")
+	@OneToMany(mappedBy = "medic", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	List<Patient> patients;
 	
 
@@ -62,6 +67,18 @@ public class Medic {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	public void addPatient(Patient patient) {
+		if(!patients.contains(patient)) {
+			patients.add(patient);
+			patient.setMedic(this);
+		}
+	}
+	public void removePatient(Patient patient) {
+		if(!patients.contains(patient)) {
+			patients.add(patient);
+			patient.setMedic(null);
+		}
 	}
 	
 	

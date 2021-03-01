@@ -52,6 +52,7 @@ public class MedicServiceController
  
         return new ResponseEntity<Medic>(entity, new HttpHeaders(), HttpStatus.OK);
     }
+   
     
     @GetMapping("/name/{name}")
     public ResponseEntity<List<Medic>> getMedicByName(@PathVariable("name") String name)
@@ -82,5 +83,20 @@ public class MedicServiceController
         service.deleteMedicById(id);
         return HttpStatus.ACCEPTED;
     }
+    
+    @PostMapping("/add/{id_patient}/{id_medic}")
+    public HttpStatus addMedicToPatient(@PathVariable("id_patient") Integer id_patient,
+                                    @PathVariable("id_medic") Integer id_medic) {
+
+       Medic id= service.addPatientToMedic(id_patient,id_medic);
+
+        if (id.getId() == id_patient){
+            return HttpStatus.ACCEPTED;
+        } else {
+            return HttpStatus.ACCEPTED;
+        }
+    }
+    
+    
  
 }

@@ -3,6 +3,7 @@ package com.santoscastillo.apirestfulservice.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.JoinColumn;
 
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ public class Patient {
     
     
     @ManyToMany(cascade=CascadeType.MERGE)
+    @JsonIgnoreProperties("patients")
     @JoinTable(
             name = "patient_medicine",
             joinColumns = @JoinColumn(name = "id_patient"),
@@ -45,8 +50,12 @@ public class Patient {
     )
     private List<Medicines> medicines;
     
-    @ManyToOne
-    Medic medic;
+    
+    
+    @JsonIgnoreProperties("patients")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_medic")
+    private Medic medic;
     
     
     
@@ -54,16 +63,18 @@ public class Patient {
 		return medic;
 	}
 
-	public void setMedic(Medic medic) {
-		this.medic = medic;
-	}
+    public void setMedic(Medic medic) {
 
+        this.medic=medic;
+         
+       }
 	public void addMedicine(Medicines medicine){
         if(this.medicines == null){
             this.medicines = new ArrayList<Medicines>();
         }
         this.medicines.add(medicine);
     }
+	
 
 	public int getId() {
 		return id;
@@ -102,8 +113,12 @@ public class Patient {
 	}
 
 	public void setMedicines(List<Medicines> medicines) {
-		this.medicines = medicines;
+		medicines.forEach(m->{
+			addMedicine(m);
+		});
 	}
+	
+	
 	
     
    

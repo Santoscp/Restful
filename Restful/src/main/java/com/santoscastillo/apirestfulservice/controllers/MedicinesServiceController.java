@@ -54,6 +54,13 @@ public class MedicinesServiceController
  
         return new ResponseEntity <List<Medicines>>(list, new HttpHeaders(), HttpStatus.OK);
     }
+    @GetMapping("/patientid/{id}")
+    public ResponseEntity<List<Medicines>> getMedicinesByPatient(@PathVariable("id") Integer id)
+       {
+    	List <Medicines> list = service.getMedicinesByPatient(id);
+ 
+        return new ResponseEntity <List<Medicines>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
     
   
  
@@ -75,6 +82,18 @@ public class MedicinesServiceController
                                                     throws Exception {
         service.deleteMedicinesById(id);
         return HttpStatus.ACCEPTED;
+    }
+    @PostMapping("/add/{id_patient}/{id_medicine}")
+    public HttpStatus addMedicineToPatient(@PathVariable("id_patient") Integer id_patient,
+                                    @PathVariable("id_medicine") Integer id_medicine) {
+
+       Integer id= service.addMedicineToPatient(id_patient,id_medicine);
+
+        if (id == id_patient){
+            return HttpStatus.ACCEPTED;
+        } else {
+            return HttpStatus.NOT_ACCEPTABLE;
+        }
     }
  
 }

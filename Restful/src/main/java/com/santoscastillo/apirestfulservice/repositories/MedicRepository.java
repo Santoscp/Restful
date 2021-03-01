@@ -24,11 +24,17 @@ public interface MedicRepository
 
 	   
 	    public List<Medic> getByName(String name);
+	
 	 
 	 @Query(
 	    		value="SELECT * FROM Medic as m WHERE m.dni LIKE ?1 ",
 	    		nativeQuery = true)
 	 public Medic getByDni(String dni);
+	 
+	 @Query(
+	    		value="SELECT m.* FROM Medic AS m WHERE patient.id LIKE ?1 ",
+	    		nativeQuery = true)
+	 public Medic getByPatient(Integer id);
 	 
 	
 

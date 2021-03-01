@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 
 import com.santoscastillo.apirestfulservice.model.Medic;
+import com.santoscastillo.apirestfulservice.model.Medicines;
 import com.santoscastillo.apirestfulservice.model.Patient;
 
 @Repository
@@ -26,5 +27,15 @@ public interface PatientRepository
 	    		value="SELECT * FROM Patient as p WHERE p.dni LIKE ?1 ",
 	    		nativeQuery = true)
 	 public Patient getByDni(String dni);
+	 
+	 
+	 @Query(
+	    		value="SELECT p.* FROM Patient as p WHERE id_medic = ?1 ",
+	    		nativeQuery = true)
+	 public List<Patient> getByMedic(Integer id);
+
+	 
+	
+
 
 }

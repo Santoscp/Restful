@@ -3,8 +3,9 @@ package com.santoscastillo.apirestfulservice.services;
 import com.santoscastillo.apirestfulservice.exception.RecordNotFoundException;
 
 import com.santoscastillo.apirestfulservice.model.Medic;
-
+import com.santoscastillo.apirestfulservice.model.Patient;
 import com.santoscastillo.apirestfulservice.repositories.MedicRepository;
+import com.santoscastillo.apirestfulservice.repositories.PatientRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 public class MedicService {
 	  @Autowired
 	    MedicRepository repository;
+	  
+	  @Autowired
+	  PatientRepository repositorypatient;
 	     
 	    public List<Medic> getAllMedic()
 	    {
@@ -76,7 +80,11 @@ public class MedicService {
 	         
 	        if(medic.isPresent())
 	        {
-	            repository.deleteById(id);
+	        	if(medic.get().getPatients()!=null && medic.get().getPatients().size()>0) {
+	        		throw new RecordNotFoundException("Delete patient first",id);
+	        	}else {
+	        		repository.deleteById(id);
+	        	}
 	        } else {
 	            throw new RecordNotFoundException("No medic record exist for given id",id);
 	        }
@@ -100,6 +108,19 @@ public class MedicService {
 	        
 	        
 	    }
+	    public Medic addPatientToMedic(Integer id_patient, Integer id_medic){
+
+	        Optional<Medic> medic = repository.findById(id_medic);
+	        Optional<Patient> patient = repositorypatient.findById(id_patient);
+
+	        medic.get().addPatient(patient.get());
+	        repositorypatient.save(patient.get());
+
+	        return medic.get();
+	    }
+	    
+	   
+	   
 	}
 
 

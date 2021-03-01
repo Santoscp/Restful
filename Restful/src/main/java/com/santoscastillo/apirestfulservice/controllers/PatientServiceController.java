@@ -62,6 +62,13 @@ public class PatientServiceController
  
         return new ResponseEntity <List<Patient>>(list, new HttpHeaders(), HttpStatus.OK);
     }
+    @GetMapping("/medic/{id}")
+    public ResponseEntity<List<Patient>> getPatientByMedic(@PathVariable("id") Integer id)
+       {
+    	List <Patient> list =service.getPatientByMedic(id);
+ 
+        return new ResponseEntity <List<Patient>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
     
   
  
@@ -84,5 +91,6 @@ public class PatientServiceController
         service.deletePatientById(id);
         return HttpStatus.ACCEPTED;
     }
+  
  
 }
